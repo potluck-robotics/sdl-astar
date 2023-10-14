@@ -3,7 +3,7 @@ project(sdl-astar)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE Release)
-set(SOURCE_FILES main.cpp world.cpp)
+set(SOURCE_FILES main.cpp robot.cpp world.cpp)
 
 add_executable(sdl-astar ${SOURCE_FILES})
 

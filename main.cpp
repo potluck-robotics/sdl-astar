@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "world.h"
+#include "robot.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -16,15 +17,19 @@ int main(int argc, char* argv[])
     SDL_RenderClear(renderer);
 
     World world;
+    Robot robot(&world);
 
     SDL_Event e;
     bool quit = false;
+
+    robot.move(3, 12);
     while (!quit){
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderClear(renderer);
 
         unsigned int cell_size = 30;
         world.draw(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, cell_size);
+        robot.draw(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, cell_size);
 
         while (SDL_PollEvent(&e)){
             if (e.type == SDL_QUIT){

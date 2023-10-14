@@ -32,3 +32,13 @@ void World::draw(SDL_Renderer* renderer, const int window_w, const int window_h,
         }
     }
 }
+
+int World::get_width()
+{
+    return GRID_WIDTH;
+}
+
+int World::get_height()
+{
+    return GRID_HEIGHT;
+}
