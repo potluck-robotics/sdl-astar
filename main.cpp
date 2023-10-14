@@ -1,15 +1,9 @@
 #include <iostream>
 #include <SDL.h>
-
+#include "world.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
-#define GRID_WIDTH 12 
-#define GRID_HEIGHT 9 
-
-int grid[GRID_WIDTH][GRID_HEIGHT];
-void init_grid();
-void draw_grid(SDL_Renderer* renderer, const int cell_size);
 
 int main(int argc, char* argv[])
 {
@@ -21,7 +15,7 @@ int main(int argc, char* argv[])
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    init_grid();
+    World world;
 
     SDL_Event e;
     bool quit = false;
@@ -30,7 +24,8 @@ int main(int argc, char* argv[])
         SDL_RenderClear(renderer);
 
         unsigned int cell_size = 30;
-        draw_grid(renderer, cell_size);
+        world.draw(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, cell_size);
+
         while (SDL_PollEvent(&e)){
             if (e.type == SDL_QUIT){
                 quit = true;
@@ -49,29 +44,4 @@ int main(int argc, char* argv[])
     SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
-}
-
-void init_grid()
-{
-    for (int i = 0; i < GRID_WIDTH; i++){
-        for (int j = 0; j < GRID_HEIGHT; j++) {
-            grid[i][j] = 0;
-        }
-    }
-}
-
-void draw_grid(SDL_Renderer* renderer, const int cell_size)
-{
-    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-
-    for(int i = 0; i < GRID_WIDTH ; i++) 
-    {
-        for(int j = 0; j < GRID_HEIGHT ; j++) 
-        {
-            int x = (WINDOW_WIDTH - cell_size * GRID_WIDTH) / 2 + i * cell_size + 1;
-            int y = (WINDOW_HEIGHT - cell_size * GRID_HEIGHT) / 2 + j * cell_size + 1;
-            SDL_Rect rect = {x, y, cell_size - 2, cell_size - 2};
-            SDL_RenderFillRect(renderer, &rect);
-        }
-    }
 }
