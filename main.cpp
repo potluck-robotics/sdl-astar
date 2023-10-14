@@ -11,7 +11,21 @@ int main(int argc, char* argv[])
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-    SDL_Delay(3000);
+    SDL_Event e;
+    bool quit = false;
+    while (!quit){
+        while (SDL_PollEvent(&e)){
+            if (e.type == SDL_QUIT){
+                quit = true;
+            }
+            if (e.type == SDL_KEYDOWN){
+                quit = true;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN){
+                quit = true;
+            }
+        }
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
