@@ -1,11 +1,14 @@
 #include <iostream>
 #include <SDL.h>
 
-#include "./robot.h"
 #include "./world.h"
+#include "./robot.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
+#define GRID_WIDTH 12
+#define GRID_HEIGHT 9
+#define CELL_SIZE 30
 
 int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_EVERYTHING);
@@ -16,8 +19,9 @@ int main(int argc, char *argv[]) {
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
   SDL_RenderClear(renderer);
 
-  World world;
+  World world(WINDOW_WIDTH, WINDOW_HEIGHT, GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
   Robot robot(&world);
+  Robot cursor(&world);
 
   SDL_Event e;
   bool quit = false;
@@ -27,19 +31,34 @@ int main(int argc, char *argv[]) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    unsigned int cell_size = 30;
-    world.Draw(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, cell_size);
-    robot.Draw(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, cell_size);
+    world.Draw(renderer);
+    robot.Draw(renderer);
+    cursor.Draw(renderer);
 
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
         quit = true;
       }
       if (e.type == SDL_KEYDOWN) {
-        quit = true;
-      }
-      if (e.type == SDL_MOUSEBUTTONDOWN) {
-        quit = true;
+        switch (e.key.keysym.sym) {
+          case SDLK_UP:
+            cursor.Move(0, -1);
+            break;
+          case SDLK_DOWN:
+            cursor.Move(0, 1);
+            break;
+          case SDLK_LEFT:
+            cursor.Move(-1, 0);
+            break;
+          case SDLK_RIGHT:
+            cursor.Move(1, 0);
+            break;
+          case SDLK_ESCAPE:
+            quit = true;
+            break;
+          default:
+            break;
+        }
       }
     }
 

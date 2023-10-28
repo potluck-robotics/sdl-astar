@@ -1,8 +1,7 @@
 #pragma once
 
 #include <SDL.h>
-#define GRID_WIDTH 12
-#define GRID_HEIGHT 9
+#include <vector>
 
 /*! @brief The World class
  *
@@ -15,6 +14,8 @@ class World {
   /*! @brief Constructor for the World class
    */
   World();
+  World(const int window_w, const int window_h, const int grid_width,
+        const int grid_height, const int cell_size);
 
   /*! @brief Draw the world
    *
@@ -25,21 +26,30 @@ class World {
    *  @param window_h The height of the window
    *  @param cell_size The size of each cell in the grid
    */
-  void Draw(SDL_Renderer *renderer, const int window_w, const int window_h,
-            const int cell_size);
+  void Draw(SDL_Renderer *renderer);
   /*! @brief Get the width of the world
    *
    *  @return The width of the world
    */
-  int GetWidth();
+  int GetGridWidth();
 
   /*! @brief Get the height of the world
    *
    *  @return The height of the world
    */
-  int GetHeight();
+  int GetGridHeight();
+
+  int GetWindowWidth();
+
+  int GetWindowHeight();
+
+  int GetCellSize() { return cell_size_; }
 
  private:
-  int grid_[GRID_WIDTH][GRID_HEIGHT];
-  void InitGrid();
+  void InitGrid(const int grid_width, const int grid_height);
+
+  std::vector<std::vector<int>> grid_;
+  int grid_width_, grid_height_;
+  int window_h_, window_w_;
+  int cell_size_;
 };

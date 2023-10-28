@@ -32,8 +32,7 @@ class Robot {
    *  @param window_h The height of the window
    *  @param cell_size The size of each cell in the grid
    */
-  void Draw(SDL_Renderer *renderer, const int window_w, const int window_h,
-            const int cell_size);
+  void Draw(SDL_Renderer *renderer);
 
  private:
   World *world_;
