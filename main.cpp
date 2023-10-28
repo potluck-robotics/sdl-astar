@@ -6,14 +6,14 @@
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
-#define GRID_WIDTH 12
-#define GRID_HEIGHT 9
-#define CELL_SIZE 30
+#define GRID_WIDTH 60
+#define GRID_HEIGHT 40
+#define CELL_SIZE 8 
 
 int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_EVERYTHING);
   SDL_Window *window =
-      SDL_CreateWindow("SDL2 Window", SDL_WINDOWPOS_CENTERED,
+      SDL_CreateWindow("SDL A*", SDL_WINDOWPOS_CENTERED,
                        SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
