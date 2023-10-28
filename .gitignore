@@ -35,3 +35,6 @@ build
 # doxygen
 html
 latex
+
+# lsp
+.cache
