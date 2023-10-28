@@ -34,6 +34,9 @@ class Robot {
    */
   void Draw(SDL_Renderer *renderer);
 
+  const int GetX() { return x_; }
+  const int GetY() { return y_; }
+
  private:
   World *world_;
   int x_;

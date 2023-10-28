@@ -45,10 +45,24 @@ class World {
 
   int GetCellSize() { return cell_size_; }
 
+  void SetStart(const int x, const int y);
+  void SetGoal(const int x, const int y);
+  void ToggleWall(const int x, const int y);
+
  private:
+  enum class CellType {
+    kEmpty = 0,
+    kStart,
+    kGoal,
+    kWall,
+  };
+
   void InitGrid(const int grid_width, const int grid_height);
 
-  std::vector<std::vector<int>> grid_;
+  std::vector<std::vector<CellType>> grid_;
   int window_h_, window_w_;
   int cell_size_;
+
+  bool SetCellType(const int x, const int y, const CellType cell_type,
+                   bool toggle);
 };

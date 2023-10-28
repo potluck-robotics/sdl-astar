@@ -1,8 +1,8 @@
-#include <iostream>
 #include <SDL.h>
+#include <iostream>
 
-#include "./world.h"
 #include "./robot.h"
+#include "./world.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -41,23 +41,32 @@ int main(int argc, char *argv[]) {
       }
       if (e.type == SDL_KEYDOWN) {
         switch (e.key.keysym.sym) {
-          case SDLK_UP:
-            cursor.Move(0, -1);
-            break;
-          case SDLK_DOWN:
-            cursor.Move(0, 1);
-            break;
-          case SDLK_LEFT:
-            cursor.Move(-1, 0);
-            break;
-          case SDLK_RIGHT:
-            cursor.Move(1, 0);
-            break;
-          case SDLK_ESCAPE:
-            quit = true;
-            break;
-          default:
-            break;
+        case SDLK_UP:
+          cursor.Move(0, -1);
+          break;
+        case SDLK_DOWN:
+          cursor.Move(0, 1);
+          break;
+        case SDLK_LEFT:
+          cursor.Move(-1, 0);
+          break;
+        case SDLK_RIGHT:
+          cursor.Move(1, 0);
+          break;
+        case SDLK_ESCAPE:
+          quit = true;
+          break;
+        case SDLK_s:
+          world.SetStart(cursor.GetX(), cursor.GetY());
+          break;
+        case SDLK_g:
+          world.SetGoal(cursor.GetX(), cursor.GetY());
+          break;
+        case SDLK_SPACE:
+          world.ToggleWall(cursor.GetX(), cursor.GetY());
+          break;
+        default:
+          break;
         }
       }
     }
