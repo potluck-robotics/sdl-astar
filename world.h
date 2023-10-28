@@ -49,7 +49,6 @@ class World {
   void InitGrid(const int grid_width, const int grid_height);
 
   std::vector<std::vector<int>> grid_;
-  int grid_width_, grid_height_;
   int window_h_, window_w_;
   int cell_size_;
 };
