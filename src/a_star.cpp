@@ -47,8 +47,8 @@ void AStar::Search() {
     }};
 
     for (auto n : successors) {
-      if (n.x < 0 || n.x > grid_.size() - 1 || n.y < 0 ||
-          n.y > grid_[0].size() - 1) {
+      if (n.x < 0 || n.x > static_cast<int>(grid_.size()) - 1 || n.y < 0 ||
+          n.y > static_cast<int>(grid_[0].size()) - 1) {
         continue;
       }
       switch (grid_[n.x][n.y]) {
@@ -62,11 +62,11 @@ void AStar::Search() {
             for (size_t i = 0; i < grid_.size(); i++) {
               bool found = false;
               for (auto m : closed_list_) {
-                if (n.x == i && n.y == j) {
+                if (n.x == static_cast<int>(i) && n.y == static_cast<int>(j)) {
                   found = true;
                   std::cout << "GOAL!" << " ";
 		  break;
-                } else if (m.x == i && m.y == j) {
+                } else if (m.x == static_cast<int>(i) && m.y == static_cast<int>(j)) {
                   found = true;
                   std::cout << m.f / 100 << " ";
                   break;
