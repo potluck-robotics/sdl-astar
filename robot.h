@@ -12,7 +12,7 @@ class Robot {
    *
    *  @param world The world in which the robot exists
    */
-  explicit Robot(World *world);
+  explicit Robot(World *world) : world_{world}, x_{0}, y_{0} {};
 
   /*! @brief Move the robot
    *

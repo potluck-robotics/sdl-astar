@@ -1,7 +1,10 @@
 #pragma once
 
 #include <SDL.h>
+
 #include <vector>
+
+#include "./config.h"
 
 /*! @brief The World class
  *
@@ -13,7 +16,6 @@ class World {
  public:
   /*! @brief Constructor for the World class
    */
-  World();
   World(const int window_w, const int window_h, const int grid_width,
         const int grid_height, const int cell_size);
 
@@ -52,7 +54,7 @@ class World {
  private:
   enum class CellType {
     kEmpty = 0,
-    kStart,
+    kSource,
     kGoal,
     kWall,
   };
@@ -60,7 +62,7 @@ class World {
   void InitGrid(const int grid_width, const int grid_height);
 
   std::vector<std::vector<CellType>> grid_;
-  int window_h_, window_w_;
+  int window_w_, window_h_;
   int cell_size_;
 
   bool SetCellType(const int x, const int y, const CellType cell_type,
