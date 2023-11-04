@@ -1,4 +1,4 @@
-#include "./world.h"
+#include "world.h"
 
 /* World
  * init grid
@@ -64,7 +64,7 @@ int World::GetWindowWidth() { return window_w_; }
 
 int World::GetWindowHeight() { return window_h_; }
 
-void World::SetStart(const int x, const int y) {
+void World::SetSource(const int x, const int y) {
   if (!SetCellType(x, y, CellType::kSource, false)) {
     return;
   }
@@ -113,3 +113,4 @@ bool World::SetCellType(const int x, const int y, const CellType cell_type,
   }
   return false;
 }
+

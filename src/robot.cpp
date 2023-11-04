@@ -1,4 +1,4 @@
-#include "./robot.h"
+#include "robot.h"
 
 void Robot::Move(const int dx, const int dy) {
   x_ += dx;

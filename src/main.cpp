@@ -2,10 +2,9 @@
 
 #include <iostream>
 
-#include "./robot.h"
-#include "./world.h"
-#include "./config.h"
-
+#include "robot.h"
+#include "world.h"
+#include "config.h"
 
 int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_EVERYTHING);
@@ -51,7 +50,7 @@ int main(int argc, char *argv[]) {
             quit = true;
             break;
           case SDLK_s:
-            world.SetStart(cursor.GetX(), cursor.GetY());
+            world.SetSource(cursor.GetX(), cursor.GetY());
             break;
           case SDLK_g:
             world.SetGoal(cursor.GetX(), cursor.GetY());

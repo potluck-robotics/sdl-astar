@@ -47,9 +47,11 @@ class World {
 
   int GetCellSize() { return cell_size_; }
 
-  void SetStart(const int x, const int y);
+  void SetSource(const int x, const int y);
   void SetGoal(const int x, const int y);
   void ToggleWall(const int x, const int y);
+
+  void Search();
 
  private:
   enum class CellType {
