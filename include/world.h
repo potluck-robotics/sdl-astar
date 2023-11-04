@@ -53,7 +53,6 @@ class World {
 
   void Search();
 
- private:
   enum class CellType {
     kEmpty = 0,
     kSource,
@@ -61,6 +60,7 @@ class World {
     kWall,
   };
 
+ private:
   void InitGrid(const int grid_width, const int grid_height);
 
   std::vector<std::vector<CellType>> grid_;
