@@ -1,27 +1,40 @@
 #pragma once
 
 #include <vector>
-#include "world.h"
 
-struct Node {
-  int x;
-  int y;
-  int g;
-  int h;
-  int f;
-  Node *parent;
-};
+#include "world.h"
 
 class AStar {
  public:
-  explicit AStar(const std::vector<std::vector<World::CellType>> &grid): grid_{grid} {} 
+  explicit AStar(const std::vector<std::vector<World::CellType>> &grid)
+      : grid_{grid} {}
 
   void Search();
 
  private:
+  struct Node {
+    int x;
+    int y;
+    double g;
+    double h;
+    double f;
+    Node *parent;
+  };
+
+  enum Direction {
+    kNorth = 0,
+    kNorthEast,
+    kEast,
+    kSouthEast,
+    kSouth,
+    kSouthWest,
+    kWest,
+    kNorthWest,
+    kDirectionCount
+  };
+
   std::vector<std::vector<World::CellType>> grid_;
 
   std::vector<Node> open_list_;
-  std::vector<Node> closed_list_; 
-
+  std::vector<Node> closed_list_;
 };

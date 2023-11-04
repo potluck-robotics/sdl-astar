@@ -58,6 +58,9 @@ int main(int argc, char *argv[]) {
           case SDLK_SPACE:
             world.ToggleWall(cursor.GetX(), cursor.GetY());
             break;
+          case SDLK_RETURN:
+            world.Search();
+            break;
           default:
             break;
         }

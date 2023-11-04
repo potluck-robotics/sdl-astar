@@ -1,4 +1,5 @@
 #include "world.h"
+#include "a_star.h"
 
 /* World
  * init grid
@@ -114,3 +115,7 @@ bool World::SetCellType(const int x, const int y, const CellType cell_type,
   return false;
 }
 
+void World::Search() {
+  AStar astar = AStar(grid_);
+	astar.Search();
+}

@@ -1,20 +1,14 @@
 #include "a_star.h"
+
 #include <algorithm>
 #include <array>
-
-enum Direction{
-  kNorth = 0,
-  kNorthEast,
-  kEast,
-  kSouthEast,
-  kSouth,
-  kSouthWest,
-  kWest,
-  kNorthWest,
-  kDirectionCount
-};
+#include <iomanip>
+#include <iostream>
 
 void AStar::Search() {
+  std::cout << std::fixed;
+  std::cout << std::setprecision(3);
+
   // get source and goal
   Node source{0, 0, 0, 0, 0, nullptr};
   Node goal{0, 0, 0, 0, 0, nullptr};
@@ -22,7 +16,7 @@ void AStar::Search() {
   for (size_t i = 0; i < grid_.size(); ++i) {
     for (size_t j = 0; j < grid_[i].size(); ++j) {
       if (grid_[i][j] == World::CellType::kSource) {
-        source.x = static_cast<int>(i); 
+        source.x = static_cast<int>(i);
         source.y = static_cast<int>(j);
       }
       if (grid_[i][j] == World::CellType::kGoal) {
@@ -34,38 +28,87 @@ void AStar::Search() {
 
   // push source to open list
   open_list_.push_back(source);
-  // TODO: delete this
-  open_list_.push_back(goal);
 
   while (open_list_.size() != 0) {
-    std::sort(open_list_.begin(), open_list_.end(), [](const Node &a, const Node &b) { return a.f < b.f; });
+    std::sort(open_list_.begin(), open_list_.end(),
+              [](const Node &a, const Node &b) { return a.f < b.f; });
     Node q = *open_list_.begin();
     open_list_.erase(open_list_.begin());
 
-    std::array<Node, kDirectionCount> successors;
+    std::array<Node, kDirectionCount> successors = {{
+        {q.x, q.y - 1, 0, 0, 0, &q},
+        {q.x + 1, q.y - 1, 0, 0, 0, &q},
+        {q.x + 1, q.y, 0, 0, 0, &q},
+        {q.x + 1, q.y + 1, 0, 0, 0, &q},
+        {q.x, q.y + 1, 0, 0, 0, &q},
+        {q.x - 1, q.y + 1, 0, 0, 0, &q},
+        {q.x - 1, q.y, 0, 0, 0, &q},
+        {q.x - 1, q.y - 1, 0, 0, 0, &q},
+    }};
 
-    // generate successors
-    successors[kNorth].x = q.x;
-    successors[kNorth].y = q.y - 1;
-    successors[kNorthEast].x = q.x + 1;
-    successors[kNorthEast].y = q.y - 1;
-    // E
-    successors[kEast].x = q.x + 1;
-    successors[kEast].y = q.y;
-    // SE
-    successors[kSouthEast].x = q.x + 1;
-    successors[kSouthEast].y = q.y + 1;
-    // S
-    successors[kSouth].x = q.x;
-    successors[kSouth].y = q.y + 1;
-    // SW
-    successors[kSouthWest].x = q.x - 1;
-    successors[kSouthWest].y = q.y + 1;
-    // W
-    successors[kWest].x = q.x - 1; 
-    successors[kWest].y = q.y;
-    // NW
-    successors[kNorthWest].x = q.x - 1;
-    successors[kNorthWest].y = q.y - 1;
+    for (auto n : successors) {
+      if (n.x < 0 || n.x > grid_.size() - 1 || n.y < 0 ||
+          n.y > grid_[0].size() - 1) {
+        continue;
+      }
+      switch (grid_[n.x][n.y]) {
+        case World::CellType::kWall:
+        case World::CellType::kSource:
+          continue;
+          break;
+        case World::CellType::kGoal:
+	  closed_list_.push_back(q);
+          for (size_t j = 0; j < grid_[0].size(); j++) {
+            for (size_t i = 0; i < grid_.size(); i++) {
+              bool found = false;
+              for (auto m : closed_list_) {
+                if (n.x == i && n.y == j) {
+                  found = true;
+                  std::cout << "GOAL!" << " ";
+		  break;
+                } else if (m.x == i && m.y == j) {
+                  found = true;
+                  std::cout << m.f / 100 << " ";
+                  break;
+                }
+              }
+              if (!found) {
+                std::cout << "XXXXX" << " ";
+              }
+            }
+            std::cout << std::endl;
+          }
+	  std::cout << q.x << ", " << q.y << std::endl;
+          std::cout << std::endl;
+          return;
+          break;
+        default:
+          break;
+      }
+      n.g = q.g + sqrt(pow(n.x - q.x, 2) + pow(n.y - q.y, 2));
+      n.h = sqrt(pow(n.x - goal.x, 2) + pow(n.y - goal.y, 2));
+      n.f = n.g + n.f;
+
+      bool skip = false;
+      for (auto m : open_list_) {
+        if (m.x == n.x && m.y == n.y && m.f < n.f) {
+          skip = true;
+          break;
+        }
+      }
+
+      for (auto m : closed_list_) {
+        if (m.x == n.x && m.y == n.y && m.f < n.f) {
+          skip = true;
+          break;
+        }
+      }
+
+      if (!skip) {
+        open_list_.push_back(n);
+      }
+    }
+
+    closed_list_.push_back(q);
   }
 }

@@ -2,8 +2,8 @@
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
-#define GRID_WIDTH 40
-#define GRID_HEIGHT 30
+#define GRID_WIDTH 10
+#define GRID_HEIGHT 8
 #define CELL_SIZE 15
 #define CELL_PADDING 1
 #define CURSOR_PADDING 3
