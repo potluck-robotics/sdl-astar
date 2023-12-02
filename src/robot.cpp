@@ -2,11 +2,10 @@
 
 void Robot::Move(const int dx, const int dy) {
   x_ += dx;
-  x_ = x_ > world_->GetGridWidth() ? world_->GetGridWidth() - CELL_PADDING : x_;
+  x_ = x_ >= world_->GetGridWidth() ? world_->GetGridWidth() - 1 : x_;
   x_ = x_ < 0 ? 0 : x_;
   y_ += dy;
-  y_ = y_ > world_->GetGridHeight() ? world_->GetGridHeight() - CELL_PADDING
-                                    : y_;
+  y_ = y_ >= world_->GetGridHeight() ? world_->GetGridHeight() - 1 : y_;
   y_ = y_ < 0 ? 0 : y_;
 }
 
