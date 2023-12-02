@@ -15,11 +15,11 @@ void AStar::Search() {
 
   for (size_t i = 0; i < grid_.size(); ++i) {
     for (size_t j = 0; j < grid_[i].size(); ++j) {
-      if (grid_[i][j] == World::CellType::kSource) {
+      if (grid_[i][j].type_ == World::CellType::kSource) {
         source.x = static_cast<int>(i);
         source.y = static_cast<int>(j);
       }
-      if (grid_[i][j] == World::CellType::kGoal) {
+      if (grid_[i][j].type_ == World::CellType::kGoal) {
         goal.x = static_cast<int>(i);
         goal.y = static_cast<int>(j);
       }
@@ -51,7 +51,7 @@ void AStar::Search() {
           n.y > static_cast<int>(grid_[0].size()) - 1) {
         continue;
       }
-      switch (grid_[n.x][n.y]) {
+      switch (grid_[n.x][n.y].type_) {
         case World::CellType::kWall:
         case World::CellType::kSource:
           continue;

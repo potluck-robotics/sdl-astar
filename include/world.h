@@ -61,10 +61,16 @@ class World {
     kWall,
   };
 
+  class Cell {
+    public:
+      CellType type_;
+      float f_;
+  };
+
  private:
   void InitGrid(const int grid_width, const int grid_height);
 
-  std::vector<std::vector<CellType>> grid_;
+  std::vector<std::vector<Cell>> grid_;
   int window_w_, window_h_;
   int cell_size_;
 

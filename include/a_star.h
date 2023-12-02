@@ -6,7 +6,7 @@
 
 class AStar {
  public:
-  explicit AStar(const std::vector<std::vector<World::CellType>> &grid)
+  explicit AStar(const std::vector<std::vector<World::Cell>> &grid)
       : grid_{grid} {}
 
   void Search();
@@ -33,7 +33,7 @@ class AStar {
     kDirectionCount
   };
 
-  std::vector<std::vector<World::CellType>> grid_;
+  std::vector<std::vector<World::Cell>> grid_;
 
   std::vector<Node> open_list_;
   std::vector<Node> closed_list_;

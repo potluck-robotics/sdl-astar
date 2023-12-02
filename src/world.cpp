@@ -17,7 +17,7 @@ void World::InitGrid(const int grid_width, const int grid_height) {
   for (auto it = grid_.begin(); it != grid_.end(); it++) {
     it->resize(grid_height);
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-      *it2 = CellType::kEmpty;
+      it2->type_ = CellType::kEmpty;
     }
   }
 }
@@ -35,7 +35,7 @@ void World::Draw(SDL_Renderer *renderer) {
           j * GetCellSize() + CELL_PADDING;
       SDL_Rect rect = {x, y, GetCellSize() - CELL_PADDING * 2,
                        GetCellSize() - CELL_PADDING * 2};
-      switch (grid_[i][j]) {
+      switch (grid_[i][j].type_) {
         case CellType::kEmpty:
           SDL_SetRenderDrawColor(renderer, COLOR_CELL);
           break;
@@ -68,7 +68,7 @@ int World::GetWindowHeight() { return window_h_; }
 void World::Reset() {
   for (auto it = grid_.begin(); it != grid_.end(); it++) {
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-      *it2 = CellType::kEmpty;
+      it2->type_ = CellType::kEmpty;
     }
   }
 }
@@ -80,9 +80,9 @@ void World::SetSource(const int x, const int y) {
 
   for (auto it = grid_.begin(); it != grid_.end(); it++) {
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-      if (*it2 == CellType::kSource &&
+      if (it2->type_ == CellType::kSource &&
           it2 != (*(grid_.begin() + x)).begin() + y) {
-        *it2 = CellType::kEmpty;
+        it2->type_ = CellType::kEmpty;
       }
     }
   }
@@ -95,9 +95,9 @@ void World::SetGoal(const int x, const int y) {
 
   for (auto it = grid_.begin(); it != grid_.end(); it++) {
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-      if (*it2 == CellType::kGoal &&
+      if (it2->type_ == CellType::kGoal &&
           it2 != (*(grid_.begin() + x)).begin() + y) {
-        *it2 = CellType::kEmpty;
+        it2->type_ = CellType::kEmpty;
       }
     }
   }
@@ -113,11 +113,11 @@ bool World::SetCellType(const int x, const int y, const CellType cell_type,
     return false;
   }
 
-  if (grid_[x][y] == CellType::kEmpty) {
-    grid_[x][y] = cell_type;
+  if (grid_[x][y].type_ == CellType::kEmpty) {
+    grid_[x][y].type_ = cell_type;
     return true;
-  } else if (toggle && grid_[x][y] == CellType::kWall) {
-    grid_[x][y] = CellType::kEmpty;
+  } else if (toggle && grid_[x][y].type_ == CellType::kWall) {
+    grid_[x][y].type_ = CellType::kEmpty;
     return true;
   }
   return false;
