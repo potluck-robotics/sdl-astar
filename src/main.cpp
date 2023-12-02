@@ -55,6 +55,9 @@ int main(int argc, char *argv[]) {
           case SDLK_g:
             world.SetGoal(cursor.GetX(), cursor.GetY());
             break;
+          case SDLK_r:
+            world.Reset();
+            break;
           case SDLK_SPACE:
             world.ToggleWall(cursor.GetX(), cursor.GetY());
             break;

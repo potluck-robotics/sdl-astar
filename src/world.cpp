@@ -65,6 +65,14 @@ int World::GetWindowWidth() { return window_w_; }
 
 int World::GetWindowHeight() { return window_h_; }
 
+void World::Reset() {
+  for (auto it = grid_.begin(); it != grid_.end(); it++) {
+    for (auto it2 = it->begin(); it2 != it->end(); it2++) {
+      *it2 = CellType::kEmpty;
+    }
+  }
+}
+
 void World::SetSource(const int x, const int y) {
   if (!SetCellType(x, y, CellType::kSource, false)) {
     return;
