@@ -54,14 +54,7 @@ void World::Draw(SDL_Renderer *renderer) {
       SDL_Color c = {COLOR_CELL};
       switch (grid_[i][j].type_) {
         case CellType::kEmpty:
-          if (grid_[i][j].f_ == 0.0f) {
-            SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-          } else {
-            c.r = 255 * (grid_[i][j].f_ - f_min) / (f_max - f_min);
-            c.g = 255 * (grid_[i][j].f_ - f_min) / (f_max - f_min);
-            c.b = 255 * (grid_[i][j].f_ - f_min) / (f_max - f_min);
-            SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-          }
+          SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
           break;
         case CellType::kSource:
           SDL_SetRenderDrawColor(renderer, COLOR_SOURCE);
@@ -78,9 +71,28 @@ void World::Draw(SDL_Renderer *renderer) {
       }
       SDL_RenderFillRect(renderer, &rect);
     }
-    std::cout << std::endl;
   }
-  std::cout << std::endl;
+  for (int i = 0; i < GetGridWidth(); i++) {
+    for (int j = 0; j < GetGridHeight(); j++) {
+      int p = CELL_PADDING + 4;
+      int x = 
+          (GetWindowWidth() - GetCellSize() * GetGridWidth()) / 2 +
+          i * GetCellSize() + p;
+      int y = 
+          (GetWindowHeight() - GetCellSize() * GetGridHeight()) / 2 +
+          j * GetCellSize() + p;
+      SDL_Rect rect = {x, y, GetCellSize() - p * 2,
+                       GetCellSize() - p * 2};
+      SDL_Color c = {COLOR_CELL};
+      if (grid_[i][j].type_ == CellType::kEmpty && grid_[i][j].f_ > 0.0f) {
+        c.r = c.r * (grid_[i][j].f_ - f_min) / (f_max - f_min) * 0.5;
+        c.g = c.g * (grid_[i][j].f_ - f_min) / (f_max - f_min) * 0.5;
+        c.b = c.b * (grid_[i][j].f_ - f_min) / (f_max - f_min) * 0.5;
+        SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+        SDL_RenderFillRect(renderer, &rect);
+      }
+    }
+  }
 //
 //  for (int i = 0; i < grid_.size(); i++) {
 //    for (int j = 0; j < grid_[0].size(); j++) {
