@@ -1,5 +1,10 @@
-#include "world.h"
-#include "a_star.h"
+#include <iostream>
+#include <limits>
+#include <ranges>
+#include <algorithm>
+
+#include "./world.h"
+#include "./a_star.h"
 
 /* World
  * init grid
@@ -25,6 +30,17 @@ void World::InitGrid(const int grid_width, const int grid_height) {
 void World::Draw(SDL_Renderer *renderer) {
   SDL_SetRenderDrawColor(renderer, COLOR_CELL);
 
+  float f_min = std::numeric_limits<float>::max();
+  float f_max = std::numeric_limits<float>::min();
+  for (int i = 0; i < grid_.size(); i++) {
+    for (int j = 0; j < grid_[0].size(); j++) {
+      if (grid_[i][j].f_ > 0) {
+        f_min = grid_[i][j].f_ < f_min ? grid_[i][j].f_ : f_min;
+        f_max = grid_[i][j].f_ > f_max ? grid_[i][j].f_ : f_max;
+      }
+    }
+  }
+
   for (int i = 0; i < GetGridWidth(); i++) {
     for (int j = 0; j < GetGridHeight(); j++) {
       int x = 
@@ -35,9 +51,17 @@ void World::Draw(SDL_Renderer *renderer) {
           j * GetCellSize() + CELL_PADDING;
       SDL_Rect rect = {x, y, GetCellSize() - CELL_PADDING * 2,
                        GetCellSize() - CELL_PADDING * 2};
+      SDL_Color c = {COLOR_CELL};
       switch (grid_[i][j].type_) {
         case CellType::kEmpty:
-          SDL_SetRenderDrawColor(renderer, COLOR_CELL);
+          if (grid_[i][j].f_ == 0.0f) {
+            SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+          } else {
+            c.r = 255 * (grid_[i][j].f_ - f_min) / (f_max - f_min);
+            c.g = 255 * (grid_[i][j].f_ - f_min) / (f_max - f_min);
+            c.b = 255 * (grid_[i][j].f_ - f_min) / (f_max - f_min);
+            SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+          }
           break;
         case CellType::kSource:
           SDL_SetRenderDrawColor(renderer, COLOR_SOURCE);
@@ -54,7 +78,17 @@ void World::Draw(SDL_Renderer *renderer) {
       }
       SDL_RenderFillRect(renderer, &rect);
     }
+    std::cout << std::endl;
   }
+  std::cout << std::endl;
+//
+//  for (int i = 0; i < grid_.size(); i++) {
+//    for (int j = 0; j < grid_[0].size(); j++) {
+//      std::cout << grid_[i][j].f_ << " ";
+//    }
+//    std::cout << std::endl;
+//  }
+//  std::cout << std::endl;
 }
 
 int World::GetGridWidth() { return static_cast<int>(grid_.size()); }
@@ -69,6 +103,7 @@ void World::Reset() {
   for (auto it = grid_.begin(); it != grid_.end(); it++) {
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
       it2->type_ = CellType::kEmpty;
+      it2->f_ = 0.0f;
     }
   }
 }
@@ -125,5 +160,5 @@ bool World::SetCellType(const int x, const int y, const CellType cell_type,
 
 void World::Search() {
   AStar astar = AStar(grid_);
-	astar.Search();
+  grid_ = astar.Search();
 }

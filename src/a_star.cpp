@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <iostream>
 
-void AStar::Search() {
+std::vector<std::vector<World::Cell>> AStar::Search() {
   std::cout << std::fixed;
   std::cout << std::setprecision(3);
 
@@ -57,7 +57,7 @@ void AStar::Search() {
           continue;
           break;
         case World::CellType::kGoal:
-	  closed_list_.push_back(q);
+          closed_list_.push_back(q);
           for (size_t j = 0; j < grid_[0].size(); j++) {
             for (size_t i = 0; i < grid_.size(); i++) {
               bool found = false;
@@ -65,10 +65,12 @@ void AStar::Search() {
                 if (n.x == static_cast<int>(i) && n.y == static_cast<int>(j)) {
                   found = true;
                   std::cout << "GOAL!" << " ";
-		  break;
-                } else if (m.x == static_cast<int>(i) && m.y == static_cast<int>(j)) {
+                  break;
+                } else if (m.x == static_cast<int>(i) &&
+                        m.y == static_cast<int>(j)) {
                   found = true;
                   std::cout << m.f / 100 << " ";
+                  grid_[i][j].f_ = static_cast<float>(m.f);
                   break;
                 }
               }
@@ -78,16 +80,16 @@ void AStar::Search() {
             }
             std::cout << std::endl;
           }
-	  std::cout << q.x << ", " << q.y << std::endl;
+          std::cout << q.x << ", " << q.y << std::endl;
           std::cout << std::endl;
-          return;
+          return grid_;
           break;
         default:
           break;
       }
       n.g = q.g + sqrt(pow(n.x - q.x, 2) + pow(n.y - q.y, 2));
       n.h = sqrt(pow(n.x - goal.x, 2) + pow(n.y - goal.y, 2));
-      n.f = n.g + n.f;
+      n.f = n.g + n.h;
 
       bool skip = false;
       for (auto m : open_list_) {
@@ -110,5 +112,7 @@ void AStar::Search() {
     }
 
     closed_list_.push_back(q);
+
   }
+  return grid_;
 }

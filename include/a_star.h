@@ -9,7 +9,7 @@ class AStar {
   explicit AStar(const std::vector<std::vector<World::Cell>> &grid)
       : grid_{grid} {}
 
-  void Search();
+  std::vector<std::vector<World::Cell>> Search();
 
  private:
   struct Node {
