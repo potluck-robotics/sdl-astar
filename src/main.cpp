@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "robot.h"
+#include "cursor.h"
 #include "world.h"
 #include "config.h"
 
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
   SDL_RenderClear(renderer);
 
   World world(WINDOW_WIDTH, WINDOW_HEIGHT, GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-  Robot cursor(&world);
+  Cursor cursor(&world);
 
   SDL_Event e;
   bool quit = false;

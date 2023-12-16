@@ -1,31 +1,31 @@
 #pragma once
 #include "./world.h"
 
-/*! @brief The Robot class
+/*! @brief The Cursor class
  *
- *  This class represents the robot in the game.
+ *  This class represents the cursor in the game.
  *  It is a simple object that can move around the world.
  */
-class Robot {
+class Cursor {
  public:
-  /*! @brief Constructor for the Robot class
+  /*! @brief Constructor for the Cursor class
    *
-   *  @param world The world in which the robot exists
+   *  @param world The world in which the cursor exists
    */
-  explicit Robot(World *world) : world_{world}, x_{0}, y_{0} {};
+  explicit Cursor(World *world) : world_{world}, x_{0}, y_{0} {};
 
-  /*! @brief Move the robot
+  /*! @brief Move the cursor
    *
-   *  This function moves the robot by the given amount.
+   *  This function moves the cursor by the given amount.
    *
    *  @param dx The amount to move in the x direction
    *  @param dy The amount to move in the y direction
    */
   void Move(const int dx, const int dy);
 
-  /*! @brief Draw the robot
+  /*! @brief Draw the cursor
    *
-   *  This function draws the robot to the screen.
+   *  This function draws the cursor to the screen.
    *
    *  @param renderer The SDL_Renderer to draw to
    *  @param window_w The width of the window

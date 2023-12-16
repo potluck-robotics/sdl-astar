@@ -4,7 +4,7 @@ project(sdl-astar)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(SOURCE_FILES src/main.cpp src/robot.cpp src/world.cpp src/a_star.cpp)
+set(SOURCE_FILES src/main.cpp src/cursor.cpp src/world.cpp src/a_star.cpp)
 
 include_directories(include)
 

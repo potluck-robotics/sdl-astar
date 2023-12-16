@@ -32,8 +32,8 @@ void World::Draw(SDL_Renderer *renderer) {
 
   float f_min = std::numeric_limits<float>::max();
   float f_max = std::numeric_limits<float>::min();
-  for (int i = 0; i < grid_.size(); i++) {
-    for (int j = 0; j < grid_[0].size(); j++) {
+  for (size_t i = 0; i < grid_.size(); i++) {
+    for (size_t j = 0; j < grid_[0].size(); j++) {
       if (grid_[i][j].f_ > 0) {
         f_min = grid_[i][j].f_ < f_min ? grid_[i][j].f_ : f_min;
         f_max = grid_[i][j].f_ > f_max ? grid_[i][j].f_ : f_max;

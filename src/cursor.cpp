@@ -1,6 +1,6 @@
-#include "robot.h"
+#include "cursor.h"
 
-void Robot::Move(const int dx, const int dy) {
+void Cursor::Move(const int dx, const int dy) {
   x_ += dx;
   x_ = x_ >= world_->GetGridWidth() ? world_->GetGridWidth() - 1 : x_;
   x_ = x_ < 0 ? 0 : x_;
@@ -9,7 +9,7 @@ void Robot::Move(const int dx, const int dy) {
   y_ = y_ < 0 ? 0 : y_;
 }
 
-void Robot::Draw(SDL_Renderer *renderer) {
+void Cursor::Draw(SDL_Renderer *renderer) {
   int window_w = world_->GetWindowWidth();
   int window_h = world_->GetWindowHeight();
   int grid_width = world_->GetGridWidth();
