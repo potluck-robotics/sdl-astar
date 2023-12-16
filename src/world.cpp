@@ -171,6 +171,32 @@ bool World::SetCellType(const int x, const int y, const CellType cell_type,
 }
 
 void World::Search() {
+  bool source_exist = false;
+  bool goal_exist = false;
+
+  // Check Start and Goal are exist in grid
+  for (auto it = grid_.begin(); it != grid_.end(); it++) {
+    for (auto it2 = it->begin(); it2 != it->end(); it2++) {
+      if (it2->type_ == CellType::kSource) {
+        source_exist = true;
+      }
+      if (it2->type_ == CellType::kGoal) {
+        goal_exist = true;
+      }
+    }
+  }
+
+  if (!source_exist || !goal_exist) {
+    return;
+  }
+
+  // Clear f values
+  for (auto it = grid_.begin(); it != grid_.end(); it++) {
+    for (auto it2 = it->begin(); it2 != it->end(); it2++) {
+      it2->f_ = 0.0f;
+    }
+  }
+  
   AStar astar = AStar(grid_);
   grid_ = astar.Search();
 }
