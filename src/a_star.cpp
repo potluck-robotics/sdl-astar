@@ -9,6 +9,9 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
   std::cout << std::fixed;
   std::cout << std::setprecision(3);
 
+  int max_open_list_size = 0;
+  int max_closed_list_size = 0;
+
   // get source and goal
   Node source{0, 0, 0, 0, 0, nullptr};
   Node goal{0, 0, 0, 0, 0, nullptr};
@@ -58,6 +61,8 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
           break;
         case World::CellType::kGoal:
           closed_list_.push_back(q);
+          std::cout << "Max open list size: " << max_open_list_size << std::endl;
+          std::cout << "Max closed list size: " << max_closed_list_size << std::endl;
           for (size_t j = 0; j < grid_[0].size(); j++) {
             for (size_t i = 0; i < grid_.size(); i++) {
               bool found = false;
@@ -106,12 +111,27 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
         }
       }
 
+      bool found = false;
       if (!skip) {
-        open_list_.push_back(n);
+        for (auto m : open_list_) {
+          if (m.x == n.x && m.y == n.y) {
+            m = n;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+         open_list_.push_back(n);
+          max_open_list_size = std::max(max_open_list_size,
+                                        static_cast<int>(open_list_.size()));
+ 
+        }
       }
     }
 
     closed_list_.push_back(q);
+    max_closed_list_size = std::max(max_closed_list_size,
+                                    static_cast<int>(closed_list_.size()));
 
   }
   return grid_;
