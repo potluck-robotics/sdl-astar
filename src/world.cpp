@@ -91,6 +91,10 @@ void World::Draw(SDL_Renderer *renderer) {
         SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
         SDL_RenderFillRect(renderer, &rect);
       }
+      if (grid_[i][j].type_ == CellType::kEmpty && grid_[i][j].on_path_) {
+        SDL_SetRenderDrawColor(renderer, 1.0, 1.0, 1.0, 1.0);
+        SDL_RenderFillRect(renderer, &rect);
+      }
     }
   }
 //

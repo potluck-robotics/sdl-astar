@@ -65,6 +65,7 @@ class World {
     public:
       CellType type_;
       float f_;
+      bool on_path_ = false;
   };
 
  private:

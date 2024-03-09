@@ -9,12 +9,10 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
   std::cout << std::fixed;
   std::cout << std::setprecision(3);
 
-  int max_open_list_size = 0;
-  int max_closed_list_size = 0;
-
   // get source and goal
   Node source{0, 0, 0, 0, 0, nullptr};
   Node goal{0, 0, 0, 0, 0, nullptr};
+  std::vector<Node*> path;
 
   for (size_t i = 0; i < grid_.size(); ++i) {
     for (size_t j = 0; j < grid_[i].size(); ++j) {
@@ -39,13 +37,13 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
     open_list_.erase(open_list_.begin());
 
     std::array<Node, kDirectionCount> successors = {{
-        {q.x, q.y - 1, 0, 0, 0, &q},
+        {q.x    , q.y - 1, 0, 0, 0, &q},
         {q.x + 1, q.y - 1, 0, 0, 0, &q},
-        {q.x + 1, q.y, 0, 0, 0, &q},
+        {q.x + 1, q.y    , 0, 0, 0, &q},
         {q.x + 1, q.y + 1, 0, 0, 0, &q},
-        {q.x, q.y + 1, 0, 0, 0, &q},
+        {q.x    , q.y + 1, 0, 0, 0, &q},
         {q.x - 1, q.y + 1, 0, 0, 0, &q},
-        {q.x - 1, q.y, 0, 0, 0, &q},
+        {q.x - 1, q.y    , 0, 0, 0, &q},
         {q.x - 1, q.y - 1, 0, 0, 0, &q},
     }};
 
@@ -57,36 +55,33 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
       switch (grid_[n.x][n.y].type_) {
         case World::CellType::kWall:
         case World::CellType::kSource:
-          continue;
           break;
         case World::CellType::kGoal:
+          // Reconstruct path
+          path = ReconstructPath(&n);
           closed_list_.push_back(q);
-          std::cout << "Max open list size: " << max_open_list_size << std::endl;
-          std::cout << "Max closed list size: " << max_closed_list_size << std::endl;
           for (size_t j = 0; j < grid_[0].size(); j++) {
             for (size_t i = 0; i < grid_.size(); i++) {
-              bool found = false;
               for (auto m : closed_list_) {
                 if (n.x == static_cast<int>(i) && n.y == static_cast<int>(j)) {
-                  found = true;
-                  std::cout << "GOAL!" << " ";
                   break;
                 } else if (m.x == static_cast<int>(i) &&
                         m.y == static_cast<int>(j)) {
-                  found = true;
-                  std::cout << m.f / 100 << " ";
                   grid_[i][j].f_ = static_cast<float>(m.f);
                   break;
                 }
               }
-              if (!found) {
-                std::cout << "XXXXX" << " ";
-              }
             }
-            std::cout << std::endl;
           }
-          std::cout << q.x << ", " << q.y << std::endl;
-          std::cout << std::endl;
+
+          // Print results of the path
+          std::cout << "Length of the path: " << path.size() << std::endl;
+
+          for (auto n : path)
+          {
+              grid_[n->x][n->y].on_path_ = true;
+          }
+
           return grid_;
           break;
         default:
@@ -121,18 +116,34 @@ std::vector<std::vector<World::Cell>> AStar::Search() {
           }
         }
         if (!found) {
-         open_list_.push_back(n);
-          max_open_list_size = std::max(max_open_list_size,
-                                        static_cast<int>(open_list_.size()));
- 
+          open_list_.push_back(n);
         }
       }
     }
 
     closed_list_.push_back(q);
-    max_closed_list_size = std::max(max_closed_list_size,
-                                    static_cast<int>(closed_list_.size()));
 
   }
   return grid_;
 }
+
+std::vector<AStar::Node*> AStar::ReconstructPath(Node *goal)
+{
+    std::vector<Node*> path;
+
+    Node *n = goal;
+    path.push_back(n);
+
+    while(n->parent != nullptr)
+    {
+        n = n->parent;
+        path.push_back(n);
+        std::cout << "x: " << n->x << "\ty: " << n->y << std::endl;
+        if (path.size() > 30) {
+            break;
+        }
+    }
+
+    return path;
+}
+

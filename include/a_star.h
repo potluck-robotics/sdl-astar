@@ -37,4 +37,6 @@ class AStar {
 
   std::vector<Node> open_list_;
   std::vector<Node> closed_list_;
+
+  std::vector<Node*> ReconstructPath(Node *goal);
 };
