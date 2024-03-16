@@ -23,6 +23,7 @@ void World::InitGrid(const int grid_width, const int grid_height) {
     it->resize(grid_height);
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
       it2->type_ = CellType::kEmpty;
+      it2->on_path_ = false;
     }
   }
 }
@@ -84,6 +85,7 @@ void World::Draw(SDL_Renderer *renderer) {
       SDL_Rect rect = {x, y, GetCellSize() - p * 2,
                        GetCellSize() - p * 2};
       SDL_Color c = {COLOR_CELL};
+      SDL_Color color_path = {COLOR_PATH};
       if (grid_[i][j].type_ == CellType::kEmpty && grid_[i][j].f_ > 0.0f) {
         c.r = c.r * (grid_[i][j].f_ - f_min) / (f_max - f_min) * 0.5;
         c.g = c.g * (grid_[i][j].f_ - f_min) / (f_max - f_min) * 0.5;
@@ -92,19 +94,11 @@ void World::Draw(SDL_Renderer *renderer) {
         SDL_RenderFillRect(renderer, &rect);
       }
       if (grid_[i][j].type_ == CellType::kEmpty && grid_[i][j].on_path_) {
-        SDL_SetRenderDrawColor(renderer, 1.0, 1.0, 1.0, 1.0);
+        SDL_SetRenderDrawColor(renderer, color_path.r, color_path.g, color_path.b, color_path.a);
         SDL_RenderFillRect(renderer, &rect);
       }
     }
   }
-//
-//  for (int i = 0; i < grid_.size(); i++) {
-//    for (int j = 0; j < grid_[0].size(); j++) {
-//      std::cout << grid_[i][j].f_ << " ";
-//    }
-//    std::cout << std::endl;
-//  }
-//  std::cout << std::endl;
 }
 
 int World::GetGridWidth() { return static_cast<int>(grid_.size()); }
@@ -120,6 +114,7 @@ void World::Reset() {
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
       it2->type_ = CellType::kEmpty;
       it2->f_ = 0.0f;
+      it2->on_path_ = false;
     }
   }
 }
@@ -198,6 +193,7 @@ void World::Search() {
   for (auto it = grid_.begin(); it != grid_.end(); it++) {
     for (auto it2 = it->begin(); it2 != it->end(); it2++) {
       it2->f_ = 0.0f;
+      it2->on_path_ = false;
     }
   }
   

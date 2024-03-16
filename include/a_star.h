@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "world.h"
 
@@ -18,7 +19,7 @@ class AStar {
     double g;
     double h;
     double f;
-    Node *parent;
+    std::shared_ptr<AStar::Node> parent;
   };
 
   enum Direction {
@@ -38,5 +39,5 @@ class AStar {
   std::vector<Node> open_list_;
   std::vector<Node> closed_list_;
 
-  std::vector<Node*> ReconstructPath(Node *goal);
+  std::vector<Node> ReconstructPath(Node goal);
 };
