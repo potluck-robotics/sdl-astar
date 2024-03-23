@@ -10,8 +10,12 @@ include_directories(include)
 
 add_executable(sdl-astar ${SOURCE_FILES})
 
-target_compile_options(sdl-astar PRIVATE -Wall -Werror)
+target_compile_options(sdl-astar PRIVATE -Wall)
 target_compile_features(sdl-astar PRIVATE cxx_std_20)
+
+IF (WIN32)
+    set(SDL2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/SDL2-2.30.1/cmake")
+ENDIF()
 
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
