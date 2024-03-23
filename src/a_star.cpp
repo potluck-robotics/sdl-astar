@@ -139,9 +139,6 @@ std::vector<AStar::Node> AStar::ReconstructPath(AStar::Node goal)
         n = *n.parent;
         path.push_back(n);
         std::cout << "x: " << n.x << "\ty: " << n.y << std::endl;
-        if (path.size() > 30) {
-            break;
-        }
     }
 
     return path;
