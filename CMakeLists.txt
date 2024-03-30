@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
+cmake_policy(SET CMP0135 NEW)
 project(sdl-astar)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -13,11 +14,18 @@ add_executable(sdl-astar ${SOURCE_FILES})
 target_compile_options(sdl-astar PRIVATE -Wall)
 target_compile_features(sdl-astar PRIVATE cxx_std_20)
 
-IF (WIN32)
-    set(SDL2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/SDL2-2.30.1/cmake")
-ENDIF()
+include(FetchContent)
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(sdl-astar ${SDL2_LIBRARIES})
+FetchContent_Declare(
+    SDL2
+    URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.0.20.tar.gz
+)
 
+FetchContent_GetProperties(SDL2)
+if(NOT SDL2_POPULATED)
+    FetchContent_Populate(SDL2)
+    add_subdirectory(${sdl2_SOURCE_DIR} ${sdl2_BINARY_DIR})
+endif()
+
+include_directories(${sdl2_SOURCE_DIR}/include)
+target_link_libraries(sdl-astar SDL2::SDL2)
