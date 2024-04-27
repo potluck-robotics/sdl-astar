@@ -2,9 +2,10 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
+#include <csignal>
 #include <iomanip>
 #include <iostream>
-#include <csignal>
 #include <memory>
 
 std::vector<std::vector<World::Cell>> AStar::Search() {
